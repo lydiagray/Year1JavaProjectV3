@@ -2,6 +2,7 @@ package TextAnalysis;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class HelperMethods {
@@ -53,17 +54,34 @@ public class HelperMethods {
         return equalOrNot;
     }
     
+    public static boolean compareTwoArrayLists(ArrayList<Integer> expected, ArrayList<Integer> result) {
+    	boolean equalOrNot = true;
+    	
+    	if (expected.size() == result.size()) {
+    		for (int i = 0; i < expected.size(); i ++) {
+        		if (expected.get(i) != result.get(i)) {
+        				equalOrNot = false;
+        		}
+        	}
+    	}
+    	else {
+    		equalOrNot = false;
+    	}    	
+    	return equalOrNot;
+    }
+    
     public static void fullAnalysisDisplay(TextAnalysis textAnalysis) {
 		System.out.println(textAnalysis.toString());
 		textAnalysis.displayFrequencies(textAnalysis.getCharacterFrequency(), TextAnalysis.characterArray, textAnalysis.getRelativeFrequency());
 		textAnalysis.barChartFrequencies(textAnalysis.characterFrequency, TextAnalysis.characterArray, textAnalysis.getHighestCount());
+		textAnalysis.displayWordLengths();
     }
     
     public static void displayInterface(TextAnalysis textAnalysis) {
     	Scanner sc = new Scanner(System.in);
     	int display = 1;
     	do {
-	    	System.out.println("What analysis would you like to see?\n\n1: Show all analysis\n2: Show basic analysis\n3: Show character frequency table\n4: Show character frequency bar chart\n0: Return to the main menu\n");
+	    	System.out.println("What analysis would you like to see?\n\n1: Show all analysis\n2: Show basic analysis\n3: Show character frequency table\n4: Show character frequency bar chart\n5: Show word lengths\n0: Return to the main menu\n");
 	    	display = sc.nextInt();
 	    	if (display == 1) {
 	    		HelperMethods.fullAnalysisDisplay(textAnalysis);
@@ -76,10 +94,13 @@ public class HelperMethods {
 	    		textAnalysis.displayFrequencies(textAnalysis.getCharacterFrequency(), TextAnalysis.characterArray, textAnalysis.getRelativeFrequency());
 	    	}
 	    	else if (display == 4) {
-	    		textAnalysis.barChartFrequencies(textAnalysis.characterFrequency, TextAnalysis.characterArray, textAnalysis.getHighestCount());
+	    		textAnalysis.barChartFrequencies(textAnalysis.getCharacterFrequency(), TextAnalysis.characterArray, textAnalysis.getHighestCount());
 	    	}
-	    	else if (display > 4) {
-	    		System.out.println("You must enter 1, 2, 3, 4 or 0 only");
+	    	else if (display == 5) {
+	    		textAnalysis.displayWordLengths();
+	    	}
+	    	else if (display > 5) {
+	    		System.out.println("You must enter 1, 2, 3, 4, 5 or 0 only");
 	    	}
     	} while (display != 0);
     }

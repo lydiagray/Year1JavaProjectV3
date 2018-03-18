@@ -3,6 +3,8 @@ package TextAnalysis;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
 import org.junit.Assert;
 
@@ -378,13 +380,51 @@ class UnitTests {
 		Assert.assertEquals(expectedResult, result);
 	}
 	
-//	@Test
-//	public void convertTextFile_ShouldThrowException() {
-//		//arrange
-//		String filename = "testfile.txt";
-//		Executable convertTextFileTest = () -> {HelperMethods.convertTextFile(filename);};
-//		//act
-//		assertThrows(FileNotFoundException.class, convertTextFileTest);
-//	}
+	@Test
+	public void wordLengths_ShouldReturnCorrectArrayOfWordLengthsForShortString() {
+		//arrange
+		ArrayList<Integer> expectedResult = new ArrayList<Integer>();
+			expectedResult.add(4);
+			expectedResult.add(4);
+			expectedResult.add(2);
+			expectedResult.add(4);
+			expectedResult.add(3);
+			expectedResult.add(4);
+			expectedResult.add(2);
+			expectedResult.add(1);
+			expectedResult.add(5);
+			expectedResult.add(6);
+		TextAnalysis testCase = new TextAnalysis(shortString);
+		//act
+		ArrayList<Integer> result = new ArrayList<Integer>(testCase.getWordLengths());
+		//assert
+		Assert.assertEquals(true, HelperMethods.compareTwoArrayLists(expectedResult, result));
+	}
+	
+	@Test
+	public void wordLengths_ShouldReturnCorrectArrayOfWordLengthsForLongString() {
+		Integer[] resultArray = new Integer[] {5, 3, 9, 2, 3, 4, 5, 2, 7, 2, 3, 6, 2, 3, 4, 3, 2, 6, 7, 2, 2, 4, 2, 5, 3, 3, 6, 4, 3, 4, 3, 6, 3, 7, 3, 2, 3, 2, 8, 2, 13, 2, 2, 3, 5, 2, 3, 3, 2, 1, 4, 7, 5, 7, 8, 2, 13, 2, 3, 3, 11, 2, 3, 3, 4, 2, 4, 2, 3, 5, 3, 3, 3, 3, 4, 3, 4, 4, 6, 3, 6, 7, 3, 8, 2, 6, 1, 10, 3, 5, 3, 7, 2, 7, 2, 3, 7, 3, 7, 4, 1, 5, 6, 4, 4, 4, 3, 5, 2, 3};
+		//arrange
+		ArrayList<Integer> expectedResult = new ArrayList<Integer>();
+		expectedResult.addAll(Arrays.asList(resultArray));
+		TextAnalysis testCase = new TextAnalysis(longString);
+		//act
+		ArrayList<Integer> result = new ArrayList<Integer>(testCase.getWordLengths());
+		//assert
+		Assert.assertEquals(true, HelperMethods.compareTwoArrayLists(expectedResult, result));
+	}
+	
+	@Test
+	public void wordLengthFrequency_ShouldReturnCorrectArrayOfWordLengthFrequenciesForShortString() {
+		//arrange
+		Integer[] resultArray = new Integer[] {1,2,1,4,1,1,0,0};
+		ArrayList<Integer> expectedResult = new ArrayList<Integer>();
+		expectedResult.addAll(Arrays.asList(resultArray));
+		TextAnalysis testCase = new TextAnalysis(shortString);
+		//act
+		ArrayList<Integer> result = new ArrayList<Integer>(testCase.getWordLengthFrequencies());
+		//assert
+		Assert.assertEquals(true, HelperMethods.compareTwoArrayLists(expectedResult, result));
+	}
 	
 }

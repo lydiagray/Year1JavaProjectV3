@@ -1,7 +1,10 @@
 package TextAnalysis;
 
 import java.math.RoundingMode;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class TextAnalysis {
@@ -19,6 +22,10 @@ public class TextAnalysis {
 	public int numberOfRecognisedCharacters;
 	public int numberOfUnrecognisedCharacters;
 	public String[] relativeFrequency;
+	public ArrayList<Integer> wordLengths;
+	public String wordLengthDisplay;
+	public ArrayList<Integer> wordLengthFrequencies;
+	public String wordLengthFrequenciesDisplay;
 	public static final char[] characterArray = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '.', ',', '!', '?', ':', ';', '"','\'', '&', '(', ')', '-', '@', '\\', '/'};
 	
 	
@@ -36,6 +43,10 @@ public class TextAnalysis {
 		this.numberOfRecognisedCharacters = numberOfRecognisedCharacters(characterFrequency);
 		this.numberOfUnrecognisedCharacters = numberOfUnrecognisedCharacters(numberOfRecognisedCharacters, charsExcludingSpaces);
 		this.relativeFrequency = relativeFrequency(characterFrequency, charsExcludingSpaces);
+		this.wordLengths = wordLengths(inputAsArray, characterArray);
+		this.wordLengthDisplay = wordLengthDisplay(wordLengths);
+		this.wordLengthFrequencies = wordLengthFrequencies(wordLengths);
+		this.wordLengthFrequenciesDisplay = wordLengthFrequenciesDisplay(wordLengthFrequencies);
 	}
 	
 	
@@ -51,6 +62,8 @@ public class TextAnalysis {
 	public int getNumberOfRecognisedCharacters() {return numberOfRecognisedCharacters;}
 	public int getNumberOfUnrecognisedCharacters() {return numberOfUnrecognisedCharacters;}
 	public String[] getRelativeFrequency() {return relativeFrequency;}
+	public ArrayList<Integer> getWordLengths() {return wordLengths;}
+	public ArrayList<Integer> getWordLengthFrequencies() {return wordLengthFrequencies;}
 	
 	//Analysis methods
 	
@@ -143,6 +156,51 @@ public class TextAnalysis {
 		return formattedRelativeFrequency;
 	}
 	
+	public ArrayList<Integer> wordLengths(char[] inputAsArray, char[] characterArray) {
+		ArrayList<Integer> wordLengths = new ArrayList<Integer>();
+		int count = 0;
+		
+   		for (Character character : inputAsArray) {
+			if (character != ' ') {
+				for (int j = 0; j < 26; j++) {
+					if (character == characterArray[j]) {
+						count++;
+					}
+				}
+			}
+
+			if (character == ' ' && count != 0) {
+				wordLengths.add(count);
+				count = 0;
+			}
+		}
+   		wordLengths.add(count);
+		return wordLengths;
+	}
+	
+	public ArrayList<Integer> wordLengthFrequencies(ArrayList<Integer> wordLengths) {
+		ArrayList<Integer> wordLengthFrequencies = new ArrayList<Integer>();
+		int count = 0;
+		
+		for (int i = 1; i <= 8; i++) {
+			for (Integer item : wordLengths) {
+				if (i == 8) {
+					if (item >= i) {
+						count++;
+					}
+				}
+				else {
+					if (item == i) {
+						count++;
+					}
+				}
+			}
+			wordLengthFrequencies.add(count);
+			count = 0;
+		}
+		return wordLengthFrequencies;
+	}
+	
 	//Display methods
 	
 	public String inputForDisplay(char[] inputAsArray) {
@@ -160,12 +218,39 @@ public class TextAnalysis {
 		return string;
 	}
 	
+	public String wordLengthDisplay(ArrayList<Integer> wordLengths) {
+		String wordLengthDisplay = "";
+		
+		for (int i = 0; i < wordLengths.size(); i++) {
+			wordLengthDisplay += "Word " + (i+1) + " is " + wordLengths.get(i) + " letters long.\n";
+		}
+		return wordLengthDisplay;
+	}
+	
+	public String wordLengthFrequenciesDisplay(ArrayList<Integer> wordLengthFrequencies) {
+		String wordLengthFrequenciesDisplay = "";
+		
+		for (int i = 0; i < 8; i++) {
+			if (i <= 6) {
+				wordLengthFrequenciesDisplay += "There are " + wordLengthFrequencies.get(i) + " words containing " + (i+1) + " letters.\n";
+			}
+			else {
+				wordLengthFrequenciesDisplay += "There are " + wordLengthFrequencies.get(i) + " words containing 8 or more letters.\n";
+			}
+		}
+		return wordLengthFrequenciesDisplay;
+	}
+	 
 	public String toString() {
 		return "\nThe text you are analysing is :\n\n" + inputForDisplay + "\n\nNumber of words: " 
 				+ numberOfWords + "\nNumber of spaces: " + numberOfSpaces + "\nTotal characters including spaces: " 
 				+ charsIncludingSpaces + "\nTotal characters excluding spaces: " + charsExcludingSpaces 
 				+ "\nTotal number of recognised characters: " + numberOfRecognisedCharacters + "\nTotal number of unrecognised characters: " 
-				+ numberOfUnrecognisedCharacters + "\n";
+				+ numberOfUnrecognisedCharacters + "\n" + wordLengthFrequenciesDisplay;
+	}
+	
+	public void displayWordLengths() {
+		System.out.println(wordLengthDisplay);
 	}
 	
 	public void displayFrequencies(int[] characterFrequency, char[] characterArray, String[] relativeFrequency) {
