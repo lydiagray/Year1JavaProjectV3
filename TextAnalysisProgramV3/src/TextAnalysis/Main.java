@@ -1,5 +1,4 @@
 package TextAnalysis;
-import java.io.FileNotFoundException;
 import java.util.*;
 
 public class Main {
@@ -29,7 +28,7 @@ public class Main {
 				    	HelperMethods.displayInterface(textAnalysis);
 					}
 					else if(inputType == 2) {
-						System.out.println("Please enter the full location of the .txt file including the path e.g. C\\code\\text.txt:");
+						System.out.println("Please enter the full location of the .txt file including the path e.g. C:\\code\\Year1JavaProjectV3\\TestTextFiles\\longStringFile.txt:");
 						Scanner locationScanner = new Scanner(System.in);
 						String location = locationScanner.nextLine();
 						input = HelperMethods.convertTextFile(location);
@@ -53,14 +52,14 @@ public class Main {
 			else if (programMode == 2) {
 				do {
 					System.out.println("Demo mode");
-					System.out.println("Would you like to see a demo of:\n1: A short piece of text\n2: A long piece of text\n0: Return to the main menu");
+					System.out.println("Would you like to see a demo of:\n1: A short piece of text\n2: A long piece of text imported from a .txt file\n0: Return to the main menu");
 					demo = sc.nextInt();
 					if (demo == 1) {
 				    	TextAnalysis textAnalysis = new TextAnalysis(UnitTests.shortString);
 						HelperMethods.displayInterface(textAnalysis);
 					}
 					else if (demo == 2) {
-				    	TextAnalysis textAnalysis = new TextAnalysis(UnitTests.longString);
+				    	TextAnalysis textAnalysis = new TextAnalysis(HelperMethods.convertTextFile("C:\\code\\Year1JavaProjectV3\\TestTextFiles\\longStringFile.txt"));
 				    	HelperMethods.displayInterface(textAnalysis);
 					}
 					else if (demo == 0) {

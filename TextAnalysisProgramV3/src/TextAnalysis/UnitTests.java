@@ -1,15 +1,11 @@
 package TextAnalysis;
 
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.junit.Assert;
 
 import org.junit.jupiter.api.Test;
-import org.junit.platform.engine.support.hierarchical.SingleTestExecutor.Executable;
 
 class UnitTests {
 
@@ -17,6 +13,28 @@ class UnitTests {
 	public static final String shortString = "99037666 This! What is this? Why, this is a (short) string.";
 	public static final String varietyString = "abc def ghi jkl mno pqrs tuv wxyz ABC DEF GHI JKL MNO PQRS TUV WXYZ !\"§ $%& /() =?* '<> #|; ²³~ @`´ ©«» ¤¼× {}abc def ghi";
 		
+	@Test
+	public void convertTextFile_ShouldCatchExceptionForBadFileLocationAndReturnEmptyString() {
+		// arrange
+		String expectedResult = "";
+		String fileLocation = "unitTest.txt";
+		// act
+		String result = HelperMethods.convertTextFile(fileLocation);
+		// assert
+		Assert.assertEquals(expectedResult, result);
+	}
+	
+	@Test
+	public void convertTextFile_ShouldConvertLongStringTextFileToString() {
+		//arrange
+		String expectedResult = longString;
+		String fileLocation = "C:\\code\\Year1JavaProjectV3\\TestTextFiles\\longStringFile.txt";
+		//act
+		String result = HelperMethods.convertTextFile(fileLocation);
+		//assert
+		Assert.assertEquals(expectedResult, result);
+	}
+	
 	@Test
 	public void characterCount_ShouldReturnCorrectCharacterCountForOneLetter_LongString() {
 		// arrange
@@ -421,6 +439,19 @@ class UnitTests {
 		ArrayList<Integer> expectedResult = new ArrayList<Integer>();
 		expectedResult.addAll(Arrays.asList(resultArray));
 		TextAnalysis testCase = new TextAnalysis(shortString);
+		//act
+		ArrayList<Integer> result = new ArrayList<Integer>(testCase.getWordLengthFrequencies());
+		//assert
+		Assert.assertEquals(true, HelperMethods.compareTwoArrayLists(expectedResult, result));
+	}
+	
+	@Test
+	public void wordLengthFrequency_ShouldReturnCorrectArrayOfWordLengthFrequenciesForLongString() {
+		//arrange
+		Integer[] resultArray = new Integer[] {3,24,33,15,9,8,10,8};
+		ArrayList<Integer> expectedResult = new ArrayList<Integer>();
+		expectedResult.addAll(Arrays.asList(resultArray));
+		TextAnalysis testCase = new TextAnalysis(longString);
 		//act
 		ArrayList<Integer> result = new ArrayList<Integer>(testCase.getWordLengthFrequencies());
 		//assert
